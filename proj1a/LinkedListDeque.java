@@ -57,6 +57,7 @@ public class LinkedListDeque<T> {
         }
         Node first = sentinel.next;
         sentinel.next = sentinel.next.next;
+        sentinel.next.prev = sentinel; //要斩草除根！不仅要改变由sentinel.next指向第一个的指针，还要砍掉原来第二个指向第一个的指针！！
         size -= 1;
         return first.item;
     }
@@ -67,6 +68,7 @@ public class LinkedListDeque<T> {
         }
         Node last = sentinel.prev;
         sentinel.prev = sentinel.prev.prev;
+        sentinel.prev.next = sentinel;
         size -= 1;
         return last.item;
     }
@@ -95,5 +97,18 @@ public class LinkedListDeque<T> {
     public T getRecursive(int index) {
         return getRecursive(sentinel.next, index);
     }
+
+    /*public static void main(String[] args) {
+        LinkedListDeque<Integer> LinkedListDeque = new LinkedListDeque<>();
+        LinkedListDeque.addFirst(1);
+        LinkedListDeque.addFirst(2);
+        LinkedListDeque.removeLast();
+        LinkedListDeque.removeLast();
+        LinkedListDeque.printDeque();
+        LinkedListDeque.addFirst(5);
+        LinkedListDeque.printDeque();
+        System.out.println(LinkedListDeque.size());
+        System.out.println(LinkedListDeque.removeLast());
+    }*/
 }
 
