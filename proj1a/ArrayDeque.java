@@ -1,13 +1,12 @@
 public class ArrayDeque<T> {
     private T[] items;
     private int first;
-    private int last;
     private int size;
+    //last = (first + size - 1) % items.length
 
     public ArrayDeque() {
         items = (T[]) new Object[8];
-        first = 0;
-        last = 0;
+        first = -1;  //Deque为空的时候不能指向0位置啊，否则first就出现歧义了！
         size = 0;
     }
 
@@ -22,10 +21,11 @@ public class ArrayDeque<T> {
         size += 1;
         if (size >= items.length) {
             resize(size * 2);
-            first = 0;        //每次resize过后，记得调整first和last位置！
-            last = size - 1;
+            first = 0;  //每次resize过后，记得调整first位置！
         }
-        if (first == 0) {
+        if (first == -1) {
+            first = 0;
+        } else if (first == 0) {
             first = items.length - 1;
         } else {
             first -= 1;
@@ -38,14 +38,8 @@ public class ArrayDeque<T> {
         if (size >= items.length) {
             resize(size * 2);
             first = 0;
-            last = size - 1;
         }
-        if (last == items.length - 1) {
-            last = 0;
-        } else {
-            last += 1;
-        }
-        items[last] = x;
+        items[(first + size - 1) % items.length] = x;
     }
 
     public boolean isEmpty() {
@@ -59,10 +53,7 @@ public class ArrayDeque<T> {
     public void printDeque() {
         int pos = first;
         for (int i = 0; i < size; i++) {
-            System.out.println(items[pos]+" ");
-            if (pos == last) {
-                break;
-            }
+            System.out.println(items[pos] + " ");
             pos = (pos + 1) % items.length;
         }
     }
@@ -82,14 +73,10 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
+        int last = (first + size - 1) % items.length;
         size -= 1;
         T lastitem = items[last];
         items[last] = null;
-        if (last == 0) {
-            last = items.length - 1;
-        } else {
-            last -= 1;
-        }
         return lastitem;
     }
 
@@ -102,15 +89,20 @@ public class ArrayDeque<T> {
 
     /*public static void main(String[] args) {
         ArrayDeque<Integer> a = new ArrayDeque<>();
+        a.addFirst(10);
+        a.addFirst(9);
+        a.addFirst(8);
+        a.addFirst(7);
+        a.addFirst(6);
+        a.addFirst(5);
+        a.addFirst(4);
+        a.addFirst(3);
+        a.addFirst(2);
         a.addFirst(1);
-        a.addFirst(1);
-        a.addFirst(1);
-        a.addFirst(1);
-        a.addFirst(1);
-        a.addFirst(1);
-        a.addFirst(1);
-        a.addFirst(1);
-        a.addFirst(1);
+        a.addFirst(0);
+        a.addLast(11);
+        System.out.println(a.removeLast());
+        System.out.println(a.removeFirst());
         a.addFirst(1);
         a.printDeque();
     }*/
