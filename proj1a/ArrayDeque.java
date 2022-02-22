@@ -1,29 +1,29 @@
-public class ArrayDeque<type> {
-    private type[] items;
+public class ArrayDeque<T> {
+    private T[] items;
     private int first;
     private int last;
     private int size;
 
     public ArrayDeque() {
-        items = (type[]) new Object[8];
+        items = (T[]) new Object[8];
         first = 0;
         last = 0;
         size = 0;
     }
 
     private void resize(int len) {
-        type[] newitems = (type[]) new Object[len];
+        T[] newitems = (T[]) new Object[len];
         System.arraycopy(items, first, newitems, 0, items.length - first);
         System.arraycopy(items, 0, newitems, items.length - first, len);
         items = newitems;
     }
 
-    public void addFirst(type x) {
+    public void addFirst(T x) {
         size += 1;
-        if(size >= items.length) {
+        if (size >= items.length) {
             resize(size * 2);
         }
-        if(first == 0) {
+        if (first == 0) {
             first = items.length - 1;
         } else {
             first -= 1;
@@ -31,12 +31,12 @@ public class ArrayDeque<type> {
         items[first] = x;
     }
 
-    public void addLast(type x) {
+    public void addLast(T x) {
         size += 1;
-        if(size >= items.length) {
+        if (size >= items.length) {
             resize(size * 2);
         }
-        if(last == items.length - 1) {
+        if (last == items.length - 1) {
             last = 0;
         } else {
             last += 1;
@@ -45,11 +45,7 @@ public class ArrayDeque<type> {
     }
 
     public boolean isEmpty() {
-        if(size == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return size == 0;
     }
 
     public int size() {
@@ -58,34 +54,34 @@ public class ArrayDeque<type> {
 
     public void printDeque() {
         int pos = first;
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             System.out.println(items[pos]);
-            if(pos == last) {
+            if (pos == last) {
                 break;
             }
             pos = (pos + 1) % items.length;
         }
     }
 
-    public type removeFirst() {
-        if(size == 0) {
+    public T removeFirst() {
+        if (size == 0) {
             return null;
         }
         size -= 1;
-        type firstitem = items[first];
+        T firstitem = items[first];
         items[first] = null;
         first = (first + 1) % items.length;
         return firstitem;
     }
 
-    public type removeLast() {
-        if(size == 0) {
+    public T removeLast() {
+        if (size == 0) {
             return null;
         }
         size -= 1;
-        type lastitem = items[last];
+        T lastitem = items[last];
         items[last] = null;
-        if(last == 0){
+        if (last == 0) {
             last = items.length - 1;
         } else {
             last -= 1;
@@ -93,8 +89,8 @@ public class ArrayDeque<type> {
         return lastitem;
     }
 
-    public type get(int index) {
-        if(index < 0 || index >= size) {
+    public T get(int index) {
+        if (index < 0 || index >= size) {
             return null;
         }
         return items[(first + index) % items.length];
