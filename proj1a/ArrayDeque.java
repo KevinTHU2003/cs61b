@@ -14,7 +14,7 @@ public class ArrayDeque<T> {
     private void resize(int len) {
         T[] newitems = (T[]) new Object[len];
         System.arraycopy(items, first, newitems, 0, items.length - first);
-        System.arraycopy(items, 0, newitems, items.length - first, len);
+        System.arraycopy(items, 0, newitems, items.length - first, size - (items.length - first) - 1);
         items = newitems;
     }
 
@@ -22,6 +22,8 @@ public class ArrayDeque<T> {
         size += 1;
         if (size >= items.length) {
             resize(size * 2);
+            first = 0;        //每次resize过后，记得调整first和last位置！
+            last = size - 1;
         }
         if (first == 0) {
             first = items.length - 1;
@@ -35,6 +37,8 @@ public class ArrayDeque<T> {
         size += 1;
         if (size >= items.length) {
             resize(size * 2);
+            first = 0;
+            last = size - 1;
         }
         if (last == items.length - 1) {
             last = 0;
@@ -55,7 +59,7 @@ public class ArrayDeque<T> {
     public void printDeque() {
         int pos = first;
         for (int i = 0; i < size; i++) {
-            System.out.println(items[pos]);
+            System.out.println(items[pos]+" ");
             if (pos == last) {
                 break;
             }
@@ -95,4 +99,19 @@ public class ArrayDeque<T> {
         }
         return items[(first + index) % items.length];
     }
+
+    /*public static void main(String[] args) {
+        ArrayDeque<Integer> a = new ArrayDeque<>();
+        a.addFirst(1);
+        a.addFirst(1);
+        a.addFirst(1);
+        a.addFirst(1);
+        a.addFirst(1);
+        a.addFirst(1);
+        a.addFirst(1);
+        a.addFirst(1);
+        a.addFirst(1);
+        a.addFirst(1);
+        a.printDeque();
+    }*/
 }
