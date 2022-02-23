@@ -14,7 +14,8 @@ public class ArrayDeque<T> {
         T[] newitems = (T[]) new Object[len];
         int pos = first;
         for (int i = 0; i < size; i++) {
-            newitems[i] = items[pos];  //为防止resize down的时候first的位置已经超出newitems的范围，干脆还是把first安排到0位置(只需在resize函数里统一修改即可)
+            newitems[i] = items[pos];
+            //为防止resize down的时候first的位置已经超出newitems的范围，干脆还是把first安排到0位置(只需在resize函数里统一修改即可)
             pos = (pos + 1) % items.length;
         }
         items = newitems;
