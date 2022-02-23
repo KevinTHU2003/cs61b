@@ -12,22 +12,16 @@ public class ArrayDeque<T> {
 
     private void resize(int len) {
         T[] newitems = (T[]) new Object[len];
-        int pos1 = first;
-        int pos2 = first;
+        int pos = first;
         for (int i = 0; i < size; i++) {
-            newitems[pos2] = items[pos1];
-            pos1 = (pos1 + 1) % items.length;
-            pos2 = (pos2 + 1) % newitems.length;
+            newitems[i] = items[pos];  //为防止resize down的时候first的位置已经超出newitems的范围，干脆还是把first安排到0位置(只需在resize函数里统一修改即可)
+            pos = (pos + 1) % items.length;
         }
         items = newitems;
+        first = 0;
     }
 
     public void addFirst(T x) {
-        /*if (size == 0) {
-            size += 1;
-            items[first] = x;
-            return;
-        }*/
         size += 1;
         if (size >= items.length) {
             resize(items.length * 2);
@@ -96,22 +90,26 @@ public class ArrayDeque<T> {
     }
 
     /*public static void main(String[] args) {
-        ArrayDeque<Integer> a = new ArrayDeque<>();
-        a.addFirst(10);
-        a.addFirst(9);
-        a.addFirst(8);
-        a.addFirst(7);
-        a.addFirst(6);
-        a.addFirst(5);
-        a.addFirst(4);
-        a.addFirst(3);
-        a.addFirst(2);
-        a.addFirst(1);
-        a.addFirst(0);
-        a.addLast(11);
-        a.removeFirst();
-        a.removeLast();
-        a.printDeque();
-        System.out.println(a.get(8));
+        ArrayDeque<Integer> ArrayDeque = new ArrayDeque<>();
+        ArrayDeque.addLast(0);
+        ArrayDeque.removeLast();
+        ArrayDeque.addFirst(2);
+        ArrayDeque.removeLast()  ;  
+        ArrayDeque.addFirst(4);
+        ArrayDeque.addFirst(5);
+        ArrayDeque.addLast(6);
+        ArrayDeque.addLast(7);
+        ArrayDeque.addLast(8);
+        ArrayDeque.addLast(9);
+        ArrayDeque.addLast(10);
+        ArrayDeque.removeFirst() ; 
+        ArrayDeque.addLast(12);
+        ArrayDeque.addLast(13);
+        ArrayDeque.get(1);   
+        ArrayDeque.get(0);  
+        ArrayDeque.removeLast();  
+        ArrayDeque.removeFirst(); 
+        ArrayDeque.removeFirst();   
+        System.out.println(ArrayDeque.removeLast()); 
     }*/
 }
