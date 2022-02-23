@@ -6,38 +6,40 @@ public class ArrayDeque<T> {
 
     public ArrayDeque() {
         items = (T[]) new Object[8];
-        first = -1;  //Deque为空的时候不能指向0位置啊，否则first就出现歧义了！
+        first = 0;  //Deque为空的时候不能指向0位置啊，否则first就出现歧义了！
         size = 0;
     }
 
     private void resize(int len) {
         T[] newitems = (T[]) new Object[len];
-        System.arraycopy(items, first, newitems, 0, items.length - first);
-        System.arraycopy(items, 0, newitems, items.length - first, size - (items.length - first) - 1);
+        int pos1 = first;
+        int pos2 = first;
+        for (int i = 0; i < size; i++) {
+            newitems[pos2] = items[pos1];
+            pos1 = (pos1 + 1) % items.length;
+            pos2 = (pos2 + 1) % newitems.length;
+        }
         items = newitems;
     }
 
     public void addFirst(T x) {
+        /*if (size == 0) {
+            size += 1;
+            items[first] = x;
+            return;
+        }*/
         size += 1;
         if (size >= items.length) {
-            resize(size * 2);
-            first = 0;  //每次resize过后，记得调整first位置！
+            resize(items.length * 2);
         }
-        if (first == -1) {
-            first = 0;
-        } else if (first == 0) {
-            first = items.length - 1;
-        } else {
-            first -= 1;
-        }
+        first = (first - 1 + items.length) % items.length;
         items[first] = x;
     }
 
     public void addLast(T x) {
         size += 1;
         if (size >= items.length) {
-            resize(size * 2);
-            first = 0;
+            resize(items.length * 2);
         }
         items[(first + size - 1) % items.length] = x;
     }
@@ -66,6 +68,9 @@ public class ArrayDeque<T> {
         T firstitem = items[first];
         items[first] = null;
         first = (first + 1) % items.length;
+        if (items.length >= 16 && items.length / size >= 4) {
+            resize(items.length / 2);
+        }
         return firstitem;
     }
 
@@ -77,6 +82,9 @@ public class ArrayDeque<T> {
         size -= 1;
         T lastitem = items[last];
         items[last] = null;
+        if (items.length >= 16 && items.length / size >= 4) {
+            resize(items.length / 2);
+        }
         return lastitem;
     }
 
@@ -101,9 +109,9 @@ public class ArrayDeque<T> {
         a.addFirst(1);
         a.addFirst(0);
         a.addLast(11);
-        System.out.println(a.removeLast());
-        System.out.println(a.removeFirst());
-        a.addFirst(1);
+        a.removeFirst();
+        a.removeLast();
         a.printDeque();
+        System.out.println(a.get(8));
     }*/
 }
