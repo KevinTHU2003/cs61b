@@ -53,7 +53,7 @@ public class Percolation {
         if (row == N - 1) {
             uf.union(cur, N * N + 1);
         }
-        if (uf.connected(cur, N * N + 1)) {
+        if (uf.connected(cur, N * N + 1) && isFull(row, col)) {
             percolates = true;
         }
     }
